@@ -52,19 +52,13 @@ namespace TrainTicket
                 return Eval(0, "");
             }
 
-            private bool HasNext()
-            {
-                if (m_plus != null) return true;
-                if (m_minus != null) return true;
-                return false;
-            }
-
             private bool Eval(int value, string s, int count = 0)
             {
                 var result = 0;
                 var expr = s;
                 var found = false;
-
+                var hasNext = (m_plus != null) || (m_minus != null);
+                
                 if (count > 0)
                 {
                     if (m_op == OpType.Add)
@@ -86,7 +80,7 @@ namespace TrainTicket
 
                 if (m_plus != null && m_plus.Eval(result, expr, count + 1)) found = true;
                 if (m_minus != null && m_minus.Eval(result, expr, count + 1)) found = true;
-                if (result == ExpectedValue && !HasNext())
+                if (result == ExpectedValue && !hasNext)
                 {
                     Console.WriteLine($"{expr}={result}");
                     found = true;
