@@ -16,8 +16,8 @@ namespace TrainTicket
 
             const int ExpectedValue = 7;
             int m_value;
-            Node plus;
-            Node minus;
+            Node m_plus;
+            Node m_minus;
             OpType m_op;
 
             public Node(int value, OpType op = OpType.None)
@@ -28,22 +28,22 @@ namespace TrainTicket
 
             public void Insert(int value)
             {
-                if (plus == null)
+                if (m_plus == null)
                 {
-                    plus = new Node(value, OpType.Add);
+                    m_plus = new Node(value, OpType.Add);
                 }
                 else
                 {
-                    plus.Insert(value);
+                    m_plus.Insert(value);
                 }
 
-                if (minus == null)
+                if (m_minus == null)
                 {
-                    minus = new Node(value, OpType.Sub);
+                    m_minus = new Node(value, OpType.Sub);
                 }
                 else
                 {
-                    minus.Insert(value);
+                    m_minus.Insert(value);
                 }
             }
 
@@ -54,8 +54,8 @@ namespace TrainTicket
 
             private bool HasNext()
             {
-                if (plus != null) return true;
-                if (minus != null) return true;
+                if (m_plus != null) return true;
+                if (m_minus != null) return true;
                 return false;
             }
 
@@ -84,8 +84,8 @@ namespace TrainTicket
                     expr = m_value.ToString();
                 }
 
-                if (plus != null && plus.Eval(result, expr, count + 1)) found = true;
-                if (minus != null && minus.Eval(result, expr, count + 1)) found = true;
+                if (m_plus != null && m_plus.Eval(result, expr, count + 1)) found = true;
+                if (m_minus != null && m_minus.Eval(result, expr, count + 1)) found = true;
                 if (result == ExpectedValue && !HasNext())
                 {
                     Console.WriteLine($"{expr}={result}");
