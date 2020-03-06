@@ -3,62 +3,66 @@
 // https://atcoder.jp/contests/abc079/tasks/abc079_c
 namespace TrainTicket
 {
-    class Program
+    public class Program
     {
         private class Node
         {
-            public enum OpType
+            private enum OpType
             {
                 None,
                 Add,
                 Sub,
             }
 
-            const int ExpectedValue = 7;
-            int m_value;
-            Node m_plus;
-            Node m_minus;
-            OpType m_op;
+            private const int ExpectedValue = 7;
+            private int m_value;
+            private Node m_add;
+            private Node m_sub;
+            private OpType m_op;
 
-            public Node(int value, OpType op = OpType.None)
+            private Node(int value, OpType op)
             {
                 m_value = value;
                 m_op = op;
             }
 
+            public Node(int value) : this(value, OpType.None)
+            {
+            }
+
             public void Insert(int value)
             {
-                if (m_plus == null)
+                if (m_add == null)
                 {
-                    m_plus = new Node(value, OpType.Add);
+                    m_add = new Node(value, OpType.Add);
                 }
                 else
                 {
-                    m_plus.Insert(value);
+                    m_add.Insert(value);
                 }
 
-                if (m_minus == null)
+                if (m_sub == null)
                 {
-                    m_minus = new Node(value, OpType.Sub);
+                    m_sub = new Node(value, OpType.Sub);
                 }
                 else
                 {
-                    m_minus.Insert(value);
+                    m_sub.Insert(value);
                 }
             }
 
             public bool Exec()
             {
-                return Eval(0, "");
+                return Eval();
             }
 
-            private bool Eval(int value, string s, int count = 0)
+            private bool Eval(int value = 0, string s = "", int count = 0)
             {
                 var result = 0;
                 var expr = s;
                 var found = false;
-                var hasNext = (m_plus != null) || (m_minus != null);
-                
+                var hasNext = (m_add != null) || (m_sub != null);
+
                 if (count > 0)
                 {
                     if (m_op == OpType.Add)
@@ -78,8 +82,8 @@ namespace TrainTicket
                     expr = m_value.ToString();
                 }
 
-                if (m_plus != null && m_plus.Eval(result, expr, count + 1)) found = true;
-                if (m_minus != null && m_minus.Eval(result, expr, count + 1)) found = true;
+                if (m_add != null && m_add.Eval(result, expr, count + 1)) found = true;
+                if (m_sub != null && m_sub.Eval(result, expr, count + 1)) found = true;
                 if (result == ExpectedValue && !hasNext)
                 {
                     Console.WriteLine($"{expr}={result}");
